@@ -1,4 +1,6 @@
 package shop.domain;
 
-public class Cart {
+public class Cart
+{
+
 }

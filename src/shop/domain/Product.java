@@ -2,11 +2,12 @@ package shop.domain;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public abstract class Product implements Taxable{
-    private final String sku;
-    private final String name;
-    private final BigDecimal netPrice;
-    private final BigDecimal taxRate;
+public abstract class Product implements Taxable
+{
+    private String sku;
+    private String name;
+    private BigDecimal netPrice;
+    private BigDecimal taxRate;
 
     public Product(String sku, String name, BigDecimal netPrice, BigDecimal taxRate) {//Konstruktor produktu z walidacją wartości
 
