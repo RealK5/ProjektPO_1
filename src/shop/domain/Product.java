@@ -45,7 +45,7 @@ public abstract class Product implements Taxable
         return netPrice.multiply(taxRate).setScale(2, RoundingMode.HALF_UP);
     }
     //Metoda zwracjaca cenę brutto
-    public BigDecimal bruttoPrice()
+    public BigDecimal grossPrice()
     {
         return netPrice.add(taxAmount());
     }
