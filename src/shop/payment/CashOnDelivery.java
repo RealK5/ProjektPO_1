@@ -1,40 +1,32 @@
 package shop.payment;
-//KOMENTARZE ODNOŚNIE DZIAŁANIA W CARDPAYMNENT!!!!!1!!!!!!!!!111!!!11!
-public class CashOnDelivery implements Payable
-{
 
-    private final PaymentService paymentService;
+public class CashOnDelivery implements Payable {
+
     private String status = "NEW";
 
-    public CashOnDelivery(PaymentService paymentService)
-    {
-        this.paymentService = paymentService;
-    }
+    public CashOnDelivery() {}
 
-    public String getStatus()
-    {
-        return status;
-    }
-    public void setStatus(String newStatus)
-    {
-        this.status = newStatus;
+    public String getStatus() { return status; }
+    public void setStatus(String s) { status = s; }
+
+    @Override
+    public boolean authorize(double amount) {
+        System.out.println("Cash on delivery authorized: " + amount);
+        status = "AUTHORIZED";
+        return true;
     }
 
     @Override
-    public boolean authorize(double amount)
-    {
-        return paymentService.authorize(this, amount);
+    public boolean capture() {
+        System.out.println("Cash on delivery captured");
+        status = "CAPTURED";
+        return true;
     }
 
     @Override
-    public boolean capture()
-    {
-        return paymentService.capture(this);
-    }
-
-    @Override
-    public boolean refund()
-    {
-        return paymentService.refund(this);
+    public boolean refund() {
+        System.out.println("Cash on delivery refunded");
+        status = "REFUNDED";
+        return true;
     }
 }

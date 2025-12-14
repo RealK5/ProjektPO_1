@@ -1,44 +1,34 @@
 package shop.payment;
 
-public class CardPayment implements Payable
-{
-    //inicjalizacja serwisu i ustawienie stanu
-    private final PaymentService paymentService;
+public class CardPayment implements Payable {
+
     private String status = "NEW";
 
-    public CardPayment(PaymentService paymentService)
-    {
-        this.paymentService = paymentService; //konstrukto, po prostu upewnia się, że bierze odpowiedni serwis
-    }
-
+    public CardPayment() {} //
     // Obsługa zmiany stanu
     public String getStatus()
-    {
-        return status;
-    }
-    public void setStatus(String newStatus)
-    {
-        this.status = newStatus;
-    }
+    { return status; }
+    public void setStatus(String s)
+    { status = s; }
 
-    @Override
-    public boolean authorize(double amount)
-    {
-        // Obiekt płatności prosi PaymentService o wykonanie Autoryzacji na sobie
-        return paymentService.authorize(this, amount);
+    @Override// Obiekt płatności prosi PaymentService o wykonanie Autoryzacji na sobie
+    public boolean authorize(double amount) {
+        System.out.println("Card authorized: " + amount);
+        status = "AUTHORIZED";
+        return true;
     }
-
+    // Obiekt płatności prosi PaymentService o wykonanie Obciążenia na sobie
     @Override
-    public boolean capture()
-    {
-        // Obiekt płatności prosi PaymentService o wykonanie Obciążenia na sobie
-        return paymentService.capture(this);
+    public boolean capture() {
+        System.out.println("Card captured");
+        status = "CAPTURED";
+        return true;
     }
-
+    // Obiekt płatności prosi PaymentService o wykonanie Zwrotu na sobie
     @Override
-    public boolean refund()
-    {
-        // Obiekt płatności prosi PaymentService o wykonanie Zwrotu na sobie
-        return paymentService.refund(this);
+    public boolean refund() {
+        System.out.println("Card refunded");
+        status = "REFUNDED";
+        return true;
     }
 }
