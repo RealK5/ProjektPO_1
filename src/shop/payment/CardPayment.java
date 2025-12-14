@@ -1,53 +1,44 @@
 package shop.payment;
 
-public class CardPayment implements Payable {
+public class CardPayment implements Payable
+{
+    //inicjalizacja serwisu i ustawienie stanu
+    private final PaymentService paymentService;
     private String status = "NEW";
-    private double authorizedAmount;
+
+    public CardPayment(PaymentService paymentService)
+    {
+        this.paymentService = paymentService; //konstrukto, po prostu upewnia się, że bierze odpowiedni serwis
+    }
+
+    // Obsługa zmiany stanu
+    public String getStatus()
+    {
+        return status;
+    }
+    public void setStatus(String newStatus)
+    {
+        this.status = newStatus;
+    }
 
     @Override
     public boolean authorize(double amount)
     {
-        System.out.println("Attempting to authorize " + amount);
-        if ("NEW".equals(status))
-        {
-            this.authorizedAmount = amount;
-            this.status = "AUTHORIZED";
-            System.out.println("Successfully AUTHORIZED.");
-            return true;
-        }
-        System.out.println("Cannot authorize. Current status: " + status);
-        return false;
+        // Obiekt płatności prosi PaymentService o wykonanie Autoryzacji na sobie
+        return paymentService.authorize(this, amount);
     }
 
     @Override
-    public boolean capture() {
-        if ("AUTHORIZED".equals(status))
-        {
-            System.out.println("Capturing authorized amount...");
-            this.status = "CAPTURED";
-            System.out.println("Successfully CAPTURED.");
-            return true;
-        }
-        System.out.println("Cannot CAPTURE. Current status: " + status);
-        return false;
+    public boolean capture()
+    {
+        // Obiekt płatności prosi PaymentService o wykonanie Obciążenia na sobie
+        return paymentService.capture(this);
     }
 
     @Override
     public boolean refund()
     {
-        if ("CAPTURED".equals(status))
-        {
-            System.out.println("Initiating refund...");
-            this.status = "REFUNDED";
-            System.out.println("Successfully REFUNDED.");
-            return true;
-        }
-        System.out.println("Cannot REFUND. Current status: " + status);
-        return false;
-    }
-
-    public String getStatus()
-    {
-        return status;
+        // Obiekt płatności prosi PaymentService o wykonanie Zwrotu na sobie
+        return paymentService.refund(this);
     }
 }
